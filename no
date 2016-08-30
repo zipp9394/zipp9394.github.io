@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+
+<!-- Ad Muncher content start --><script type="text/javascript" src="http://interceptedby.admuncher.com/C0B826F111E05174/helper.js#0.85224.0" id="WwXx_MainScript"></script><link rel="stylesheet" href="http://interceptedby.admuncher.com/C0B826F111E05174/helper.css" type="text/css" media="all" /><!-- Ad Muncher content end -->
+
+
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+       有3年时间吗？大概也差不多了。我还是没能放下你，我不知道这是恨还是爱？这3年来第一次正视这个问题，几个月前我一直脑海中模拟重遇你的画面，我甩头就走？我假装开心和你打招呼继续哈拉？是应该对你冷嘲热讽？还是选择歇斯底里问个明白……想了一万个画面，结果偶遇的那一晚，我什么都没说呆呆的周围其他朋友瞎聊了一下，偶尔余光瞄了一眼，我发现你刻意避开我这个方向？大概是我的错觉吧，可是我也不知道要跟你说什么，就像曾经我们复合的那一晚一样，我根本不知道要说什么才合适。
+      我要怎么做才合适呢？
+      我带着这个问题都浑浑噩噩过了3年吧？没有了悲伤，少了那种开怀大笑的表情，真的就像没有心的游魂一样。
+      我有想过到底是不是你把我彻底的毁了？
+      你的爆脾气，你的无理取闹，我忍让了，分开之后慢慢才发现我越来越懦弱，直到现在我对生活、工作都忍气吞声，我真的是被社会磨平棱角吗？这个莫须有的罪名我不会套在你头上，因为我真的分不清，可是我当时只是个刚踏出社会的毛头小子；
+      待续。
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "no";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
